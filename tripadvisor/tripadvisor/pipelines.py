@@ -17,16 +17,14 @@ class TripadvisorPipeline(object):
     def clean_html(self, item):
         item['entry'] = item['entry'].strip('\r\n')
         line_sentences = item['entry'].split('.')
-        for s in line_sentences:
-            s = s.strip('. ')
-            s = s.rstrip(' ').lstrip(' ')
-            if s != ' ':
-                yield s
+        for sentence in line_sentences:
+            sentence = sentence.strip('. ')
+            sentence = sentence.replace('\n', ' ')
+            sentence = sentence.lstrip().rstrip()
             if sentence != '':
+                yield sentence
 
     def process_item(self, item, spider):
-        self.file.write(item['entry'])
-
-        #for cleaned in self.clean_html(item):
-        #    self.file.write(cleaned + ".\n")
+        for cleaned in self.clean_html(item):
+            self.file.write(cleaned + ".\n")
         return item
