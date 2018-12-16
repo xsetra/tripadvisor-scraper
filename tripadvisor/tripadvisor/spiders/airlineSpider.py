@@ -3,6 +3,7 @@ import scrapy
 
 class AirlineSpider(scrapy.Spider):
     name = "AirlineSpider"
+    count = 0
 
     def start_requests(self):
         urls = [
@@ -19,7 +20,9 @@ class AirlineSpider(scrapy.Spider):
                 'rate': review.css('div.reviewItemInline span.ui_bubble_rating').extract_first(),
             }
 
-        next_page = response.css('a.nav.next::attr(href)').extract_first()
-        if next_page is not None:
-            next_page = response.urljoin(next_page)
-            yield scrapy.Request(url=next_page, callback=self.parse)
+        if self.count <= 2:
+            next_page = response.css('a.nav.next::attr(href)').extract_first()
+            if next_page is not None:
+                next_page = response.urljoin(next_page)
+                self.count += 1
+                yield scrapy.Request(url=next_page, callback=self.parse)
