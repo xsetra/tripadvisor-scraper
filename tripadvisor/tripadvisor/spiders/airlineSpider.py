@@ -15,7 +15,6 @@ class AirlineSpider(scrapy.Spider):
     def parse(self, response):
         for review in response.css('div.review_collection div.reviewSelector'):
             yield {
-                'title': review.css('span.noQuotes::text').extract_first(),
                 'entry': review.css('div.entry p.partial_entry::text').extract_first(),
                 'rate': review.css('div.reviewItemInline span.ui_bubble_rating').extract_first(),
             }
