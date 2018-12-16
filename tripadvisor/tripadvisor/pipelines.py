@@ -22,6 +22,7 @@ class TripadvisorPipeline(object):
             s = s.rstrip(' ').lstrip(' ')
             if s != ' ':
                 yield s
+            if sentence != '':
 
     def process_item(self, item, spider):
         self.file.write(item['entry'])
