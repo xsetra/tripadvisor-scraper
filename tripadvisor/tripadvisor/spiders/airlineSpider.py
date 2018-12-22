@@ -5,8 +5,9 @@ class AirlineSpider(scrapy.Spider):
     name = "AirlineSpider"
 
     def start_requests(self):
+        url_param = getattr(self, 'url', 'https://www.tripadvisor.com.tr/Airline_Review-d8729174-Reviews-Turkish-Airlines')
         urls = [
-            'https://www.tripadvisor.com.tr/Airline_Review-d8729174-Reviews-Turkish-Airlines',
+            url_param,
         ]
         for url in urls:
             yield scrapy.Request(url=url, callback=self.parse)
